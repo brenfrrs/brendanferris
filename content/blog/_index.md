@@ -1,11 +1,11 @@
 +++
-title = "Blog"
-description = "My blog posts about technology and development"
+title = "First Blog Title"
+description = "Placeholder for description."
 +++
 
-# Blog
+# This is the blog.
 
-Welcome to my blog! Here I write about technology, development, and other topics that interest me.
+Welcome to my blog!
 
 ## Recent Posts
 
