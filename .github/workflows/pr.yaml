@@ -1,0 +1,24 @@
+name: Check PR
+on:
+  pull_request:
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Zola
+        uses: getzola/zola-action@v0.2.0
+        with:
+          version: 0.18.0
+
+      - name: Check site
+        run: zola check
