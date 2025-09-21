@@ -6,6 +6,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -15,10 +16,10 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup Zola
-        uses: getzola/zola-action@v0.2.0
+      - name: Install Zola
+        uses: taiki-e/install-action@v2
         with:
-          version: 0.18.0
+          tool: zola@0.18.0
 
       - name: Check site
         run: zola check
