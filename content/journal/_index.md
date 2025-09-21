@@ -1,9 +1,9 @@
 +++
-title = "Journal"
-description = "My personal journal and thoughts"
+title = "Journal Entries"
+description = "Journal"
 +++
 
-# Journal
+# Journal1
 
 Welcome to my journal where I share my thoughts, experiences, and daily musings.
 
