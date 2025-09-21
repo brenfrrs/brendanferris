@@ -1,0 +1,30 @@
+# The URL the site will be built for
+base_url = "https://brendanferris.com"
+theme = "anemone"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
+
+[extra]
+# Put all your custom variables here
+author = "Brendan Ferris"
+favicon = "favicon.ico"
+list_pages = false
+twitter_card = false
+enable_search = true
+
+## Navigation
+header_nav = [
+  { url = "/", name_en = "/home/" },
+  { url = "/about", name_en = "/about/" },
+  { url = "/journal", name_en = "/journal/" },
+  { url = "/blog", name_en = "/blog/" }
+]
