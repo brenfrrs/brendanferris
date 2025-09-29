@@ -17,7 +17,7 @@ highlight_code = true
 # Put all your custom variables here
 author = "Brendan Ferris"
 favicon = "favicon.ico"
-list_pages = false
+list_pages = true
 twitter_card = false
 enable_search = true
 
