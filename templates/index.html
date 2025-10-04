@@ -5,13 +5,14 @@
 
     {% if config.extra.list_pages %}
     <ul class="posts">
-        {% for page in section.pages %}
+        {% set blog_section = get_section(path="blog/_index.md") %}
+        {% for page in blog_section.pages %}
+        {% if page.date %}
         <li>
+            <time class="date">{{ page.date | date(format="%Y-%m-%d") }}</time>
             <a href="{{ page.permalink }}">{{ page.title }}</a>
-            {% if page.date %}
-            <span class="date">{{ page.date | date(format="%Y-%m-%d") }}</span>
-            {% endif %}
         </li>
+        {% endif %}
         {% endfor %}
     </ul>
     {% endif %}
