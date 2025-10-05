@@ -1,0 +1,13 @@
+{% extends "anemone/templates/base.html" %}
+
+{% block extra_head %}
+{{ super() }}
+<!-- Highcharts CDN -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<!-- Timeline module -->
+<script src="https://code.highcharts.com/modules/timeline.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{ get_url(path='css/custom.css') }}">
+{% endblock %}
