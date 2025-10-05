@@ -19,4 +19,4 @@ Hello! I'm Brendan Ferris, a passionate developer and technology enthusiast.
 
 ## Contact
 
-You can reach me at [your-email@example.com](mailto:your-email@example.com) 
+You can reach me at [brendan@brendanferris.com](mailto:brendan@brendanferris.com) 
