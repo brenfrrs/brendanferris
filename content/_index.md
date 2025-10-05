@@ -160,14 +160,14 @@ Highcharts.chart('career-timeline', {
             x: Date.UTC(2022, 0, 1)
         }, {
             name: 'Founding Analytics Engineer',
-            company: 'Snap Finance',
+            company: 'Seen Finance (Snap Acq.)',
             location: 'Salt Lake City, UT',
             duration: 'Feb 2023 - Apr 2024',
             description: 'Orchestrated data pipelines, developed CI/CD, implemented Looker dashboards',
             x: Date.UTC(2023, 1, 1)
         }, {
             name: 'Staff Analytics Engineer',
-            company: 'Snap Finance (Seen)',
+            company: 'Seen Finance (Snap Acq.)',
             location: 'Salt Lake City, UT',
             duration: 'Apr 2024 - Apr 2025',
             description: 'Designed change management framework, automated validation processes, enhanced CI/CD',
@@ -185,5 +185,3 @@ Highcharts.chart('career-timeline', {
 </script>
 
 ## Recent Posts
-
-Check out my latest blog posts and journal entries below. 
