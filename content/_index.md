@@ -50,9 +50,9 @@ Highcharts.chart('career-timeline', {
     chart: {
         type: 'timeline',
         backgroundColor: 'transparent',
-        height: 200, // Reduced from 300
-        spacing: [2, 2, 2, 2], // Further reduced spacing
-        margin: [5, 5, 5, 5], // Reduced margins
+        height: 200,
+        spacing: [2, 2, 2, 2], 
+        margin: [5, 5, 5, 5], 
         style: {
             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
         }
