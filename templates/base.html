@@ -10,12 +10,211 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{{ get_url(path='css/custom.css') }}">
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-F9573MXJHP"></script>
+<!-- Cookie consent banner -->
+<div id="cookie-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.9); color: white; padding: 15px; text-align: center; z-index: 1000; border-top: 1px solid rgba(255, 255, 255, 0.2);">
+  <div style="max-width: 600px; margin: 0 auto;">
+    <p style="margin: 0 0 10px 0; font-size: 14px;">
+      This website uses cookies for analytics to improve your experience. 
+    </p>
+    <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+      <button onclick="acceptCookies()" style="padding: 8px 16px; background: #4A90E2; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+        Accept
+      </button>
+      <button onclick="declineCookies()" style="padding: 8px 16px; background: transparent; color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 4px; cursor: pointer; font-size: 14px;">
+        Decline
+      </button>
+      <button onclick="showCookieSettings()" style="padding: 8px 16px; background: transparent; color: #4A90E2; border: 1px solid #4A90E2; border-radius: 4px; cursor: pointer; font-size: 14px;">
+        Settings
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Cookie Settings Modal -->
+<div id="cookie-settings" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); color: white; z-index: 10000; align-items: center; justify-content: center;">
+  <div style="background: rgba(0, 0, 0, 0.95); padding: 30px; border-radius: 10px; max-width: 500px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.2);">
+    <h3 style="margin: 0 0 20px 0; color: #4A90E2;">Cookie Settings</h3>
+    
+    <div style="text-align: left; margin-bottom: 20px;">
+      <div style="margin-bottom: 15px;">
+        <label style="display: flex; align-items: center; cursor: pointer;">
+          <input type="checkbox" id="analytics-cookies" style="margin-right: 10px;">
+          <span><strong>Analytics Cookies</strong></span>
+        </label>
+        <p style="margin: 5px 0 0 25px; font-size: 12px; color: #cccccc;">
+          Help me understand how visitors interact with my website by collecting and reporting information anonymously.
+        </p>
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 15px; justify-content: center;">
+      <button onclick="saveCookieSettings()" style="padding: 12px 24px; background: #4A90E2; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600;">
+        Save Preferences
+      </button>
+      <button onclick="hideCookieSettings()" style="padding: 12px 24px; background: transparent; color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 6px; cursor: pointer; font-size: 14px;">
+        Cancel
+      </button>
+    </div>
+    
+    <p style="margin: 15px 0 0 0; font-size: 12px; color: #cccccc;">
+      You can change these settings at any time.
+    </p>
+    
+    <div id="debug-info" style="margin-top: 20px; padding: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; font-size: 11px; text-align: left;">
+      <strong>Debug Info:</strong><br>
+      <span id="current-status"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Google Analytics (only loads after consent) -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-F9573MXJHP');
+  function acceptCookies() {
+    console.log('🍪 Accepting cookies');
+    document.getElementById('cookie-banner').style.display = 'none';
+    localStorage.setItem('analyticsEnabled', 'true');
+    
+    loadGoogleAnalytics();
+    updateDebugInfo();
+  }
+  
+  function declineCookies() {
+    console.log('🚫 Declining cookies');
+    document.getElementById('cookie-banner').style.display = 'none';
+    localStorage.setItem('analyticsEnabled', 'false');
+    updateDebugInfo();
+  }
+  
+  function showCookieSettings() {
+    console.log('⚙️ Showing cookie settings');
+    const modal = document.getElementById('cookie-settings');
+    const analyticsCheckbox = document.getElementById('analytics-cookies');
+    
+    const analyticsEnabled = localStorage.getItem('analyticsEnabled') === 'true';
+    analyticsCheckbox.checked = analyticsEnabled;
+    
+    updateDebugInfo();
+    
+    modal.style.display = 'flex';
+  }
+  
+  function hideCookieSettings() {
+    console.log('❌ Hiding cookie settings');
+    document.getElementById('cookie-settings').style.display = 'none';
+  }
+  
+  function saveCookieSettings() {
+    console.log('💾 Saving cookie settings');
+    const analyticsEnabled = document.getElementById('analytics-cookies').checked;
+    
+    console.log('Analytics enabled:', analyticsEnabled);
+    
+    localStorage.setItem('analyticsEnabled', analyticsEnabled.toString());
+    
+    document.getElementById('cookie-settings').style.display = 'none';
+    document.getElementById('cookie-banner').style.display = 'none';
+    
+    if (analyticsEnabled) {
+      console.log('✅ Enabling Google Analytics');
+      loadGoogleAnalytics();
+    } else {
+      console.log('❌ Disabling Google Analytics');
+      removeGoogleAnalytics();
+    }
+    
+    updateDebugInfo();
+  }
+  
+  function removeGoogleAnalytics() {
+    console.log('🧹 Removing Google Analytics');
+    
+    const scripts = document.querySelectorAll('script[src*="googletagmanager"]');
+    console.log('Found', scripts.length, 'Google Analytics scripts to remove');
+    scripts.forEach(script => {
+      console.log('Removing script:', script.src);
+      script.remove();
+    });
+    
+    if (window.dataLayer) {
+      console.log('Clearing dataLayer, current length:', window.dataLayer.length);
+      window.dataLayer = [];
+    }
+    
+    if (window.gtag) {
+      console.log('Removing gtag function');
+      delete window.gtag;
+    }
+    
+    console.log('✅ Google Analytics removed');
+  }
+  
+  function loadGoogleAnalytics() {
+    console.log('📊 Loading Google Analytics');
+    
+    const existingScripts = document.querySelectorAll('script[src*="googletagmanager"]');
+    if (existingScripts.length > 0) {
+      console.log('⚠️ Google Analytics already loaded, skipping');
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-F9573MXJHP';
+    script.onload = function() {
+      console.log('✅ Google Analytics script loaded');
+    };
+    script.onerror = function() {
+      console.error('❌ Failed to load Google Analytics script');
+    };
+    document.head.appendChild(script);
+    
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-F9573MXJHP');
+    
+    window.gtag = gtag;
+    
+    console.log('✅ Google Analytics initialized');
+  }
+  
+  function updateDebugInfo() {
+    const analyticsEnabled = localStorage.getItem('analyticsEnabled');
+    const status = analyticsEnabled === 'true' ? 'Analytics cookies: ENABLED' : 
+                  analyticsEnabled === 'false' ? 'Analytics cookies: DISABLED' : 
+                  'Analytics cookies: NOT SET';
+    
+    document.getElementById('current-status').textContent = status;
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM loaded, checking cookie consent');
+    const analyticsEnabled = localStorage.getItem('analyticsEnabled');
+    
+    console.log('📊 Current state:');
+    console.log('  - analyticsEnabled:', analyticsEnabled);
+    
+    if (analyticsEnabled === 'true') {
+      console.log('✅ Analytics enabled, loading Google Analytics');
+      loadGoogleAnalytics();
+    } else if (analyticsEnabled === 'false') {
+      console.log('❌ Analytics disabled');
+    } else {
+      console.log('🆕 First visit, showing banner');
+      const banner = document.getElementById('cookie-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        console.log('✅ Banner should now be visible');
+      } else {
+        console.error('❌ Banner element not found!');
+      }
+    }
+    
+    updateDebugInfo();
+  });
 </script>
+{% endblock %}
+
+{% block content %}
+{{ super() }}
 {% endblock %}
