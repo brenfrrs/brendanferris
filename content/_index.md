@@ -9,178 +9,272 @@ Welcome to my personal website! This is where I share my thoughts, projects, and
 
 I'm a developer passionate about creating clean, efficient solutions.
 
-<div id="career-timeline" style="width: 100%; height: 200px; margin: 10px 0;"></div>
+<div style="width: 100%; overflow-x: auto; overflow-y: hidden; margin: 20px 0 10px 0;">
+    <div id="career-timeline" style="min-width: 1400px; height: 180px; overflow: visible;"></div>
+</div>
 
 <style>
-/* Scoped to this chart only */
-#career-timeline .highcharts-timeline-series .highcharts-point {
-    stroke-width: 0;
+#career-timeline {
+    min-height: 180px;
+    overflow: visible !important;
 }
 
-#career-timeline .highcharts-timeline-series .highcharts-graph {
-    stroke-width: 0;
+#career-timeline .highcharts-container {
+    overflow: visible !important;
 }
 
-#career-timeline .highcharts-timeline-series .highcharts-data-label {
-    background: rgba(0, 0, 0, 0.8) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: 6px !important;
-    padding: 6px 10px !important;
-    color: #ffffff !important;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-    font-weight: 600 !important;
-    font-size: 12px !important;
-    textOutline: 'none' !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
+#career-timeline .highcharts-series rect {
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-#career-timeline .highcharts-timeline-series .highcharts-data-label-box {
-    background: transparent !important;
-    border: none !important;
+#career-timeline .highcharts-xaxis-labels text {
+    fill: rgba(255, 255, 255, 0.75) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
 }
 
-#career-timeline .highcharts-timeline-series .highcharts-data-label text {
-    fill: #ffffff !important;
+/* Ensure tooltip doesn't get clipped */
+.highcharts-tooltip {
+    z-index: 9999 !important;
+}
+
+/* Style the scrollbar for better appearance */
+#career-timeline::-webkit-scrollbar {
+    height: 8px;
+}
+
+#career-timeline::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#career-timeline::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+#career-timeline::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 </style>
 
 <script>
-Highcharts.chart('career-timeline', {
-    chart: {
-        type: 'timeline',
-        backgroundColor: 'transparent',
-        height: 200,
-        spacing: [2, 2, 2, 2], 
-        margin: [5, 5, 5, 5], 
-        style: {
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
-        }
-    },
-    title: null,
-    subtitle: null,
-    xAxis: {
-        type: 'datetime',
-        visible: false
-    },
-    yAxis: {
-        visible: false
-    },
-    legend: {
-        enabled: false
-    },
-    exporting: {
-        enabled: false
-    },
-    plotOptions: {
-        timeline: {
-            dataLabels: {
-                enabled: true,
-                allowOverlap: false,
-                format: '{point.company}',
-                style: {
-                    color: '#ffffff',
-                    fontSize: '12px',
-                    fontWeight: '600',
-                    textOutline: 'none',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof Highcharts === 'undefined') {
+        console.error('Highcharts not loaded');
+        return;
+    }
+    
+    Highcharts.chart('career-timeline', {
+        chart: {
+            type: 'xrange',
+            backgroundColor: 'transparent',
+            height: 180,
+            spacing: [15, 15, 15, 15],
+            margin: [15, 15, 35, 15]
+        },
+        title: null,
+        xAxis: {
+            type: 'datetime',
+            labels: {
+                style: { 
+                    color: 'rgba(255, 255, 255, 0.75)', 
+                    fontSize: '11px',
+                    fontWeight: '500'
                 },
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                borderColor: 'rgba(255, 255, 255, 0.3)',
-                borderRadius: 6,
-                borderWidth: 1,
-                padding: 6
+                y: 20
             },
-            marker: {
-                symbol: 'rect',
-                radius: 8,
-                lineWidth: 0,
-                width: 20,
-                height: 8
-            },
-            connectorWidth: 0,
-            pointPadding: 0,
-            groupPadding: 0,
-            states: {
-                hover: {
-                    enabled: false
+            lineWidth: 1,
+            lineColor: 'rgba(255, 255, 255, 0.25)',
+            tickLength: 5,
+            tickColor: 'rgba(255, 255, 255, 0.25)',
+            gridLineWidth: 0
+        },
+        yAxis: {
+            title: null,
+            categories: ['Career'],
+            visible: false
+        },
+        legend: { enabled: false },
+        credits: { enabled: false },
+        exporting: { enabled: false },
+        plotOptions: {
+            xrange: {
+                borderRadius: 8,
+                pointPadding: 0,
+                groupPadding: 0,
+                dataLabels: {
+                    enabled: true,
+                    inside: true,
+                    useHTML: true,
+                    align: 'left',
+                    verticalAlign: 'middle',
+                    padding: 0,
+                    overflow: 'allow',
+                    crop: false,
+                    style: { 
+                        textOutline: 'none',
+                        width: '100%'
+                    },
+                    formatter: function() {
+                        const width = this.point.shapeArgs.width;
+                        const titleLength = this.point.name.length;
+                        const companyLength = this.point.company.length;
+                        
+                        // Dynamic font sizing: calculate based on available width per character
+                        // Aim for roughly 5-7 pixels per character for readability
+                        let titleSize = Math.max(5.5, Math.min(11, (width - 20) / (titleLength * 0.6)));
+                        let companySize = Math.max(5, Math.min(9, (width - 20) / (companyLength * 0.65)));
+                        
+                        // For very narrow bars, scale down more aggressively
+                        if (width < 120) {
+                            titleSize = Math.max(5, Math.min(8, (width - 16) / (titleLength * 0.55)));
+                            companySize = Math.max(4.5, Math.min(7, (width - 16) / (companyLength * 0.6)));
+                        }
+                        
+                        // Left-align text with proper wrapping and vertical centering
+                        return '<div style="width: ' + (width - 14) + 'px; padding: 5px 7px; color: #fff; text-align: left; line-height: 1.15; text-shadow: 0 1px 3px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; height: 100%;">' +
+                               '<div style="font-size: ' + titleSize + 'px; font-weight: 700; margin-bottom: 1px; word-wrap: break-word; overflow-wrap: break-word;">' + this.point.name + '</div>' +
+                               '<div style="font-size: ' + companySize + 'px; font-weight: 500; opacity: 0.95; word-wrap: break-word; overflow-wrap: break-word; line-height: 1.1;">' + this.point.company + '</div>' +
+                               '</div>';
+                    }
+                },
+                states: {
+                    hover: { 
+                        brightness: 0.15,
+                        borderColor: 'rgba(255, 255, 255, 0.5)',
+                        borderWidth: 2
+                    }
                 }
             }
-        }
-    },
-    tooltip: {
-        enabled: true,
-        useHTML: true,
-        backgroundColor: 'rgba(0, 0, 0, 0.95)',
-        borderColor: 'rgba(255, 255, 255, 0.3)',
-        borderRadius: 8,
-        borderWidth: 1,
-        shadow: true,
-        style: {
-            color: '#ffffff',
-            fontSize: '13px',
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
         },
-        formatter: function() {
-            return '<div style="padding: 8px;">' +
-                   '<div style="font-weight: 600; margin-bottom: 6px; color: #4A90E2;">' + this.point.name + '</div>' +
-                   '<div style="margin-bottom: 4px;"><strong>Company:</strong> ' + this.point.company + '</div>' +
-                   '<div style="margin-bottom: 4px;"><strong>Location:</strong> ' + this.point.location + '</div>' +
-                   '<div style="margin-bottom: 4px;"><strong>Duration:</strong> ' + this.point.duration + '</div>' +
-                   '<div style="margin-top: 8px; font-style: italic; color: #cccccc;">' + this.point.description + '</div>' +
-                   '</div>';
-        }
-    },
-    credits: {
-        enabled: false
-    },
-    colors: ['#6BCF7F', '#FFD93D', '#FF6B6B', '#50C878', '#7B68EE', '#4A90E2'],
-    series: [{
-        name: 'Career Timeline',
-        data: [{
-            name: 'Data Science Bootcamp',
-            company: 'Flatiron School',
-            location: 'New York, NY',
-            duration: 'Sep 2020 - Jan 2021',
-            description: 'Immersive Data Science program',
-            x: Date.UTC(2020, 8, 1)
-        }, {
-            name: 'Data Analyst (Fraud/Risk)',
-            company: 'Snap Finance',
-            location: 'Salt Lake City, UT',
-            duration: 'Jun 2021 - Jan 2022',
-            description: 'SQL analysis, R programming, automated executive reporting',
-            x: Date.UTC(2021, 5, 1)
-        }, {
-            name: 'Data Scientist (Fraud)',
-            company: 'Snap Finance',
-            location: 'Salt Lake City, UT',
-            duration: 'Jan 2022 - Jan 2023',
-            description: 'Integrated DataVisor, developed XGBoost model, conducted fraud analysis',
-            x: Date.UTC(2022, 0, 1)
-        }, {
-            name: 'Founding Analytics Engineer',
-            company: 'Seen Finance (Snap Acq.)',
-            location: 'Salt Lake City, UT',
-            duration: 'Feb 2023 - Apr 2024',
-            description: 'Orchestrated data pipelines, developed CI/CD, implemented Looker dashboards',
-            x: Date.UTC(2023, 1, 1)
-        }, {
-            name: 'Staff Analytics Engineer',
-            company: 'Seen Finance (Snap Acq.)',
-            location: 'Salt Lake City, UT',
-            duration: 'Apr 2024 - Apr 2025',
-            description: 'Designed change management framework, automated validation processes, enhanced CI/CD',
-            x: Date.UTC(2024, 3, 1)
-        }, {
-            name: 'Senior Analytics Engineer',
-            company: 'Weave',
-            location: 'Lehi, UT',
-            duration: 'Apr 2025 - Present',
-            description: 'Led data model development, implemented Dagster orchestration, upskilled team members',
-            x: Date.UTC(2025, 3, 1)
+        tooltip: {
+            useHTML: true,
+            backgroundColor: 'rgba(0, 0, 0, 0.95)',
+            borderColor: 'rgba(255, 255, 255, 0.3)',
+            borderRadius: 10,
+            borderWidth: 1,
+            padding: 0,
+            outside: true,
+            hideDelay: 500,
+            stickOnContact: true,
+            shadow: {
+                color: 'rgba(0, 0, 0, 0.5)',
+                offsetX: 0,
+                offsetY: 4,
+                width: 10
+            },
+            style: { 
+                color: '#ffffff',
+                fontSize: '13px',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                pointerEvents: 'auto'
+            },
+            formatter: function() {
+                const companyLink = this.point.website ? 
+                    '<a href="' + this.point.website + '" target="_blank" rel="noopener noreferrer" style="color: ' + this.point.color + '; text-decoration: none; border-bottom: 2px solid ' + this.point.color + '; transition: opacity 0.2s;" onmouseover="this.style.opacity=\'0.7\'" onmouseout="this.style.opacity=\'1\'">' + this.point.company + '</a>' :
+                    '<span style="color: ' + this.point.color + ';">' + this.point.company + '</span>';
+                
+                return '<div style="width: 240px; padding: 14px 16px; box-sizing: border-box; line-height: 1.5;">' +
+                       '<div style="font-weight: 700; font-size: 15px; margin-bottom: 10px; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word;">' + 
+                       this.point.name + 
+                       '</div>' +
+                       '<div style="font-size: 12px; margin-bottom: 8px; word-wrap: break-word; overflow-wrap: break-word;">' +
+                       '<span style="color: rgba(255, 255, 255, 0.7);">at</span> <strong>' + companyLink + '</strong>' +
+                       '</div>' +
+                       '<div style="font-size: 11px; color: rgba(255, 255, 255, 0.85); margin-bottom: 3px; word-wrap: break-word; overflow-wrap: break-word;">' +
+                       '📍 ' + this.point.location +
+                       '</div>' +
+                       '<div style="font-size: 11px; color: rgba(255, 255, 255, 0.85); margin-bottom: 10px;">' +
+                       '📅 ' + this.point.duration +
+                       '</div>' +
+                       '<div style="font-size: 11px; color: rgba(255, 255, 255, 0.9); line-height: 1.5; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.2); word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">' +
+                       this.point.description +
+                       '</div>' +
+                       '</div>';
+            }
+        },
+        series: [{
+            name: 'Career',
+            pointWidth: 70,
+            data: [
+                {
+                    x: Date.UTC(2020, 8, 1),
+                    x2: Date.UTC(2021, 0, 31),
+                    y: 0,
+                    name: 'Data Science Bootcamp',
+                    company: 'Flatiron School',
+                    website: 'https://flatironschool.com',
+                    location: 'New York, NY',
+                    duration: 'Sep 2020 - Jan 2021',
+                    description: 'Completed an immersive Data Science program covering Python, SQL, machine learning, and statistical analysis.',
+                    color: '#10B981'
+                },
+                {
+                    x: Date.UTC(2021, 5, 1),
+                    x2: Date.UTC(2022, 0, 31),
+                    y: 0,
+                    name: 'Data Analyst',
+                    company: 'Snap Finance',
+                    website: 'https://www.snapfinance.com',
+                    location: 'Salt Lake City, UT',
+                    duration: 'Jun 2021 - Jan 2022',
+                    description: 'Performed SQL analysis and R programming to automate executive reporting and detect fraud patterns. Supported the operations and executive fraud teams.',
+                    color: '#F59E0B'
+                },
+                {
+                    x: Date.UTC(2022, 0, 1),
+                    x2: Date.UTC(2023, 0, 31),
+                    y: 0,
+                    name: 'Data Scientist',
+                    company: 'Snap Finance',
+                    website: 'https://www.snapfinance.com',
+                    location: 'Salt Lake City, UT',
+                    duration: 'Jan 2022 - Jan 2023',
+                    description: 'Integrated DataVisor for fraud detection and developed XGBoost models to improve payment chargeback review process.',
+                    color: '#EF4444'
+                },
+                {
+                    x: Date.UTC(2023, 1, 1),
+                    x2: Date.UTC(2024, 3, 30),
+                    y: 0,
+                    name: 'Founding Analytics Engineer',
+                    company: 'Seen Finance',
+                    website: 'https://www.seen.com',
+                    location: 'Salt Lake City, UT | Berlin, DE',
+                    duration: 'Feb 2023 - Apr 2024',
+                    description: 'Built the analytics foundation from scratch, orchestrating data pipelines with Prefect, warehouse manipulations with dbt and BigQuery developing CI/CD workflows, and implementing Looker dashboards.',
+                    color: '#14B8A6'
+                },
+                {
+                    x: Date.UTC(2024, 3, 1),
+                    x2: Date.UTC(2025, 3, 30),
+                    y: 0,
+                    name: 'Staff Analytics Engineer',
+                    company: 'Seen Finance',
+                    website: 'https://www.seen.com',
+                    location: 'Salt Lake City, UT | Berlin, DE',
+                    duration: 'Apr 2024 - Apr 2025',
+                    description: 'Led the design of a change management framework, automated validation processes, and enhanced CI/CD pipelines for production reliability, grew foundational analytics team by one member.',
+                    color: '#8B5CF6'
+                },
+                {
+                    x: Date.UTC(2025, 3, 1),
+                    x2: Date.UTC(2025, 11, 31),
+                    y: 0,
+                    name: 'Senior Analytics Engineer',
+                    company: 'Weave',
+                    website: 'https://www.getweave.com',
+                    location: 'Lehi, UT',
+                    duration: 'Apr 2025 - Present',
+                    description: 'Leading data model development, re-writing ELT pipelines in Dagster, mentoring team members on best practices, transitioning team from reactive to proactive.',
+                    color: '#3B82F6'
+                }
+            ]
         }]
-    }]
+    });
 });
 </script>
 
