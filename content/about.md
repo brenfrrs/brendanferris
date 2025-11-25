@@ -5,7 +5,7 @@ description = "Learn more about Brendan Ferris"
 
 # About Me
 
-Hello! I'm Brendan Ferris, a passionate developer and technology enthusiast.
+Hello! I'm Brendan Ferris, an all around data guy.. 
 
 ## Background
 
