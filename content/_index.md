@@ -279,4 +279,109 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!-- Skills -->
+
+<div id="skills-chart" style="width: 100%; max-width: 600px; height: 500px; margin: 40px auto;"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof Highcharts === 'undefined') return;
+    
+Highcharts.chart('skills-chart', {
+    chart: {
+        polar: true,
+        type: 'line',
+        backgroundColor: 'transparent'
+    },
+    
+    title: {
+        text: null
+    },
+    
+    pane: {
+        size: '80%'
+    },
+    
+    xAxis: {
+        categories: [
+            'Python', 
+            'SQL', 
+            'dbt', 
+            'GCP', 
+            'Prefect', 
+            'Dagster', 
+            'Looker', 
+            'Sigma', 
+            'Preset', 
+            'GitHub Actions'
+        ],
+        tickmarkPlacement: 'on',
+        lineWidth: 0,
+        labels: {
+            style: {
+                color: 'currentColor',
+                fontSize: '12px',
+                fontWeight: '500'
+            }
+        }
+    },
+    
+    yAxis: {
+        gridLineInterpolation: 'polygon',
+        lineWidth: 0,
+        min: 0,
+        max: 10,
+        tickInterval: 2,
+        labels: {
+            style: {
+                color: 'currentColor',
+                opacity: 0.5,
+                fontSize: '10px'
+            }
+        },
+        gridLineColor: 'currentColor',
+        gridLineWidth: 1
+    },
+    
+    tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        borderRadius: 8,
+        style: { 
+            color: '#fff',
+            fontSize: '13px'
+        },
+        pointFormat: '<b>{point.y}/10</b>'
+    },
+    
+    legend: {
+        enabled: false
+    },
+    
+    series: [{
+        name: 'Proficiency',
+        data: [10, 10, 10, 8, 7, 7, 7, 7, 7, 8],
+        pointPlacement: 'on',
+        color: '#8B5CF6',
+        fillOpacity: 0.15,
+        lineWidth: 2,
+        marker: {
+            radius: 4,
+            fillColor: 'rgba(139, 92, 246, 0.5)',
+            lineColor: '#8B5CF6',
+            lineWidth: 2
+        }
+    }],
+    
+    exporting: {
+        enabled: false
+    },
+    
+    credits: {
+        enabled: false
+    }
+    });
+});
+</script>
+
 ## Recent Posts
