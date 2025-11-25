@@ -23,16 +23,17 @@ I'm a developer passionate about creating clean, efficient solutions.
     overflow: visible !important;
 }
 
+#career-timeline .highcharts-xaxis-labels text {
+    fill: currentColor !important;
+    opacity: 0.85 !important;
+    font-weight: 600 !important;
+    font-size: 11px !important;
+}
+
 #career-timeline .highcharts-series rect {
     stroke: rgba(255, 255, 255, 0.3);
     stroke-width: 1;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-#career-timeline .highcharts-xaxis-labels text {
-    fill: rgba(255, 255, 255, 0.75) !important;
-    font-size: 11px !important;
-    font-weight: 500 !important;
 }
 
 /* Ensure tooltip doesn't get clipped */
@@ -80,16 +81,16 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'datetime',
             labels: {
                 style: { 
-                    color: 'rgba(255, 255, 255, 0.75)', 
+                    color: '#1f2937',
                     fontSize: '11px',
-                    fontWeight: '500'
+                    fontWeight: '600'
                 },
                 y: 20
             },
             lineWidth: 1,
-            lineColor: 'rgba(255, 255, 255, 0.25)',
+            lineColor: 'var(--border, rgba(128, 128, 128, 0.3))',
             tickLength: 5,
-            tickColor: 'rgba(255, 255, 255, 0.25)',
+            tickColor: 'var(--border, rgba(128, 128, 128, 0.3))',
             gridLineWidth: 0
         },
         yAxis: {
@@ -207,10 +208,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: 'Data Science Bootcamp',
                     company: 'Flatiron School',
                     website: 'https://flatironschool.com',
-                    location: 'New York, NY',
+                    location: 'New York',
                     duration: 'Sep 2020 - Jan 2021',
                     description: 'Completed an immersive Data Science program covering Python, SQL, machine learning, and statistical analysis.',
-                    color: '#10B981'
+                    color: '#059669'
                 },
                 {
                     x: Date.UTC(2021, 5, 1),
@@ -219,10 +220,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: 'Data Analyst',
                     company: 'Snap Finance',
                     website: 'https://www.snapfinance.com',
-                    location: 'Salt Lake City, UT',
+                    location: 'Salt Lake City',
                     duration: 'Jun 2021 - Jan 2022',
                     description: 'Performed SQL analysis and R programming to automate executive reporting and detect fraud patterns. Supported the operations and executive fraud teams.',
-                    color: '#F59E0B'
+                    color: '#D97706'
                 },
                 {
                     x: Date.UTC(2022, 0, 1),
@@ -231,10 +232,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: 'Data Scientist',
                     company: 'Snap Finance',
                     website: 'https://www.snapfinance.com',
-                    location: 'Salt Lake City, UT',
+                    location: 'Salt Lake City',
                     duration: 'Jan 2022 - Jan 2023',
                     description: 'Integrated DataVisor for fraud detection and developed XGBoost models to improve payment chargeback review process.',
-                    color: '#EF4444'
+                    color: '#DC2626' 
                 },
                 {
                     x: Date.UTC(2023, 1, 1),
@@ -243,10 +244,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: 'Founding Analytics Engineer',
                     company: 'Seen Finance',
                     website: 'https://www.seen.com',
-                    location: 'Salt Lake City, UT | Berlin, DE',
+                    location: 'Salt Lake City | Berlin',
                     duration: 'Feb 2023 - Apr 2024',
                     description: 'Built the analytics foundation from scratch, orchestrating data pipelines with Prefect, warehouse manipulations with dbt and BigQuery developing CI/CD workflows, and implementing Looker dashboards.',
-                    color: '#14B8A6'
+                    color: '#0D9488'
                 },
                 {
                     x: Date.UTC(2024, 3, 1),
@@ -255,14 +256,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: 'Staff Analytics Engineer',
                     company: 'Seen Finance',
                     website: 'https://www.seen.com',
-                    location: 'Salt Lake City, UT | Berlin, DE',
+                    location: 'Salt Lake City | Berlin',
                     duration: 'Apr 2024 - Apr 2025',
                     description: 'Led the design of a change management framework, automated validation processes, and enhanced CI/CD pipelines for production reliability, grew foundational analytics team by one member.',
-                    color: '#8B5CF6'
+                    color: '#7C3AED'
                 },
                 {
                     x: Date.UTC(2025, 3, 1),
-                    x2: Date.UTC(2025, 11, 31),
+                    x2: new Date().getTime(),
                     y: 0,
                     name: 'Senior Analytics Engineer',
                     company: 'Weave',
@@ -270,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     location: 'Lehi, UT',
                     duration: 'Apr 2025 - Present',
                     description: 'Leading data model development, re-writing ELT pipelines in Dagster, mentoring team members on best practices, transitioning team from reactive to proactive.',
-                    color: '#3B82F6'
+                    color: '#2563EB'  // Deeper blue - strong contrast
                 }
             ]
         }]
