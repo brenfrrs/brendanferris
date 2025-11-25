@@ -280,106 +280,176 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- Skills -->
+# Skills
 
 <div id="skills-chart" style="width: 100%; max-width: 600px; height: 500px; margin: 40px auto;"></div>
+
+<style>
+#skills-chart .highcharts-grid-line {
+    stroke: currentColor !important;
+    opacity: 0.2 !important;
+}
+
+#skills-chart .highcharts-axis-labels text {
+    fill: currentColor !important;
+}
+</style>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof Highcharts === 'undefined') return;
     
-Highcharts.chart('skills-chart', {
-    chart: {
-        polar: true,
-        type: 'line',
-        backgroundColor: 'transparent'
-    },
-    
-    title: {
-        text: null
-    },
-    
-    pane: {
-        size: '80%'
-    },
-    
-    xAxis: {
-        categories: [
-            'Python', 
-            'SQL', 
-            'dbt', 
-            'GCP', 
-            'Prefect', 
-            'Dagster', 
-            'Looker', 
-            'Sigma', 
-            'Preset', 
-            'GitHub Actions'
-        ],
-        tickmarkPlacement: 'on',
-        lineWidth: 0,
-        labels: {
-            style: {
-                color: 'currentColor',
-                fontSize: '12px',
-                fontWeight: '500'
-            }
-        }
-    },
-    
-    yAxis: {
-        gridLineInterpolation: 'polygon',
-        lineWidth: 0,
-        min: 0,
-        max: 10,
-        tickInterval: 2,
-        labels: {
-            style: {
-                color: 'currentColor',
-                opacity: 0.5,
-                fontSize: '10px'
+    Highcharts.chart('skills-chart', {
+        chart: {
+            polar: true,
+            type: 'line',
+            backgroundColor: 'transparent'
+        },
+        
+        title: {
+            text: null
+        },
+        
+        pane: {
+            size: '80%'
+        },
+        
+        xAxis: {
+            categories: [
+                'Python', 
+                'SQL', 
+                'dbt', 
+                'GCP', 
+                'Prefect', 
+                'Dagster', 
+                'Looker', 
+                'Sigma', 
+                'GitHub Actions',
+            ],
+            tickmarkPlacement: 'on',
+            lineWidth: 0,
+            gridLineColor: 'currentColor',
+            gridLineWidth: 1,
+            labels: {
+                style: {
+                    color: 'currentColor',
+                    fontSize: '12px',
+                    fontWeight: '500'
+                }
             }
         },
-        gridLineColor: 'currentColor',
-        gridLineWidth: 1
-    },
-    
-    tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        borderColor: 'rgba(255, 255, 255, 0.3)',
-        borderRadius: 8,
-        style: { 
-            color: '#fff',
-            fontSize: '13px'
+        
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0,
+            max: 10,
+            tickInterval: 2,
+            gridLineColor: 'currentColor',
+            gridLineWidth: 1,
+            labels: {
+                style: {
+                    color: 'currentColor',
+                    fontSize: '10px'
+                }
+            }
         },
-        pointFormat: '<b>{point.y}/10</b>'
-    },
-    
-    legend: {
-        enabled: false
-    },
-    
-    series: [{
-        name: 'Proficiency',
-        data: [10, 10, 10, 8, 7, 7, 7, 7, 7, 8],
-        pointPlacement: 'on',
-        color: '#8B5CF6',
-        fillOpacity: 0.15,
-        lineWidth: 2,
-        marker: {
-            radius: 4,
-            fillColor: 'rgba(139, 92, 246, 0.5)',
-            lineColor: '#8B5CF6',
-            lineWidth: 2
+        
+        tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            borderColor: 'rgba(255, 255, 255, 0.3)',
+            borderRadius: 8,
+            padding: 12,
+            style: { 
+                color: '#fff',
+                fontSize: '13px'
+            },
+            useHTML: true,
+            formatter: function() {
+                return '<div style="max-width: 220px; word-wrap: break-word; overflow-wrap: break-word;">' +
+                    '<strong style="font-size: 14px; color: ' + this.point.color + ';">' + 
+                    this.point.name + '</strong><br/>' +
+                    '<span style="font-size: 16px; font-weight: 600; margin: 8px 0; display: block;">' + 
+                    this.point.y + '/10</span>' +
+                    '<p style="margin: 8px 0 0 0; line-height: 1.5; color: rgba(255,255,255,0.9); white-space: normal;">' + 
+                    this.point.description + '</p>' +
+                    '</div>';
+            }
+        },
+        
+        legend: {
+            enabled: false
+        },
+        
+        series: [{
+            name: 'Proficiency',
+            data: [
+                {
+                    y: 6.5,
+                    name: 'Python',
+                    description: 'Advanced proficiency in data engineering, automation, and building ETL pipelines'
+                },
+                {
+                    y: 7,
+                    name: 'SQL',
+                    description: 'Expert in complex queries, optimization, and database design for analytics'
+                },
+                {
+                    y: 9.5,
+                    name: 'dbt',
+                    description: 'Extensive experience building and maintaining data transformation pipelines'
+                },
+                {
+                    y: 5,
+                    name: 'GCP',
+                    description: 'Proficient with BigQuery, Cloud Storage, and data services'
+                },
+                {
+                    y: 7,
+                    name: 'Prefect',
+                    description: 'Experience orchestrating data workflows and managing dependencies'
+                },
+                {
+                    y: 5,
+                    name: 'Dagster',
+                    description: 'Building and deploying data pipelines with asset-based orchestration'
+                },
+                {
+                    y: 7,
+                    name: 'Looker',
+                    description: 'Creating dashboards, LookML modeling, and business intelligence'
+                },
+                {
+                    y: 3,
+                    name: 'Sigma',
+                    description: 'Building interactive analytics dashboards for business users'
+                },
+                {
+                    y: 6,
+                    name: 'GitHub Actions',
+                    description: 'CI/CD pipeline automation and workflow orchestration'
+                }
+            ],
+            pointPlacement: 'on',
+            color: '#8B5CF6',
+            fillOpacity: 0.15,
+            lineWidth: 2,
+            marker: {
+                radius: 4,
+                fillColor: 'rgba(139, 92, 246, 0.5)',
+                lineColor: '#8B5CF6',
+                lineWidth: 2
+            }
+        }],
+        
+        exporting: {
+            enabled: false
+        },
+        
+        credits: {
+            enabled: false
         }
-    }],
-    
-    exporting: {
-        enabled: false
-    },
-    
-    credits: {
-        enabled: false
-    }
     });
 });
 </script>

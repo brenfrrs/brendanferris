@@ -2,11 +2,13 @@
 
 {% block extra_head %}
 {{ super() }}
+<script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
 <!-- Highcharts -->
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <!-- XRange module for timeline bars -->
 <script src="https://code.highcharts.com/modules/xrange.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{{ get_url(path='css/custom.css') }}">
