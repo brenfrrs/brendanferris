@@ -1,11 +1,7 @@
 +++
-title = "First Blog Title"
-description = "Placeholder for description."
+title = "Blog"
+description = "A collection of incoherent ramblings."
 +++
-
-# This is the blog.
-
-Welcome to my blog!
 
 ## Recent Posts
 
