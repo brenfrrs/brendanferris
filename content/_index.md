@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             useHTML: true,
             formatter: function() {
-                return '<div style="max-width: 220px; word-wrap: break-word; overflow-wrap: break-word;">' +
+                return '<div style="width: 220px; word-wrap: break-word; overflow-wrap: break-word;">' +
                     '<strong style="font-size: 14px; color: ' + this.point.color + ';">' + 
                     this.point.name + '</strong><br/>' +
                     '<span style="font-size: 16px; font-weight: 600; margin: 8px 0; display: block;">' + 
