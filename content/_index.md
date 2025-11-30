@@ -3,11 +3,13 @@ title = "Brendan Ferris"
 description = "Welcome to my personal website"
 +++
 
-Welcome to my personal website! This is where I share my thoughts, projects, and experiences.
+Welcome to my site. I post here as an outlet for work that is outside of my normal day-to-day engineering tasks. Some older projects can also be found <a href="https://medium.com/@brendanfrrs" target="_blank">here</a>.
 
 ## About Me
 
-I'm a developer passionate about creating clean, efficient solutions.
+My technical career began about 6 years ago. I was working as a private investigator in the New York/New Jersey area focusing mainly on insurance fraud. I became interested in understanding the ways insurance companies mitigated fraudulent waste through analytics and data science. This led me to take up a role on the fraud team at a fintech company in Salt Lake City, Utah -- where I am still based. I most liked the cat-and-mouse aspect of working in the fraud space, and being an analyst gave me a good technical base when I was promoted to the data science team. As a data scientist I was able to utilize predictive analytics to combat payment chargebacks, and exploratory analysis to understand fraud trends and causes. 
+
+I began to notice that I really spent most of my time as a data scientist trying to get the data in the proper format for predictive analytics. As is normal in most mid-size companies, data was dispersed and managed by teams often working within silos. When my company had acquired a credit card startup in Berlin I was appointed to be one of the founding engineers. The task was straight forward, "wind down" the existing customer base and re-launch under a new name and with improved business processes. It was here that my focus shifted toward data engineering, data infrastructure, and data platforms. I became very interested in improving the experience of data scientists, data analysts, and business users. 
 
 <div style="width: 100%; overflow-x: auto; overflow-y: hidden; margin: 20px 0 10px 0;">
     <div id="career-timeline" style="min-width: 1400px; height: 180px; overflow: visible;"></div>
