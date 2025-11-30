@@ -1,0 +1,4 @@
+{# templates/shortcodes/years_since.html #}
+{% set current_year = now() | date(format="%Y") | int %}
+{% set start = start_year | int %}
+{{ current_year - start }}
