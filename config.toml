@@ -24,6 +24,6 @@ enable_search = true
 ## Navigation
 header_nav = [
   { url = "/", name_en = "/home/" },
-  { url = "/about", name_en = "/about/" },
+  { url = "/platform", name_en = "/platform/" },
   { url = "/blog", name_en = "/blog/" }
 ]
