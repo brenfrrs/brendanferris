@@ -31,15 +31,4 @@
             Cookie Settings
         </a>
     </p>
-    {% set release_data = load_data(path="content/data/release.toml", format="toml") %}
-    {% if release_data.latest_release and release_data.latest_release != "N/A" %}
-    <p style="font-size: 0.85em; opacity: 0.6;">
-        <a href="{{ release_data.release_url }}"
-           target="_blank"
-           rel="noopener noreferrer"
-           style="color: var(--accent); text-decoration: none; opacity: 0.7;">
-            Latest Release: {{ release_data.latest_release }}
-        </a>
-    </p>
-    {% endif %}
 </div>
