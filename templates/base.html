@@ -219,17 +219,4 @@
 
 {% block content %}
 {{ super() }}
-
-{% set release_data = load_data(path="content/data/release.toml", format="toml") %}
-{% if release_data.latest_release and release_data.latest_release != "N/A" %}
-<div style="position: fixed; bottom: 60px; right: 10px; font-size: 0.7em; opacity: 0.4; font-family: monospace; z-index: 100;">
-    <a href="{{ release_data.release_url }}" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       style="color: var(--accent); text-decoration: none;"
-       title="View release notes">
-        v{{ release_data.latest_release }}
-    </a>
-</div>
-{% endif %}
 {% endblock %}
