@@ -1,0 +1,1 @@
+[![Contributions](https://github-readme-activity-graph.vercel.app/graph?username=brenfrrs&theme=merko)](https://github.com/brenfrrs/brendanferris)
