@@ -50,67 +50,67 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Generated version: $VERSION"
       
-          - name: Gather Release Notes
-          id: release-notes
-          run: |
-            # Get the last tag (any tag, not just today's)
-            LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+      - name: Gather Release Notes
+        id: release-notes
+        run: |
+          # Get the last tag (any tag, not just today's)
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          if [ -z "$LAST_TAG" ]; then
+            # No previous tags, get all commits
+            COMMITS=$(git log --pretty=format:"- %s (%h)" --reverse)
+          else
+            # Get commits since last tag
+            COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s (%h)" --reverse)
+          fi
+          
+          if [ -z "$COMMITS" ]; then
+            COMMITS="- No new commits (scheduled rebuild)"
+          fi
+          
+          # Get PR information from commit messages and GitHub API
+          PR_INFO=""
+          if [ "${{ github.event_name }}" == "push" ]; then
+            # Extract PR numbers from commit messages (format: (#123) or (fixes #123))
+            PR_NUMBERS=$(echo "$COMMITS" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -n -u || true)
             
-            if [ -z "$LAST_TAG" ]; then
-              # No previous tags, get all commits
-              COMMITS=$(git log --pretty=format:"- %s (%h)" --reverse)
-            else
-              # Get commits since last tag
-              COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s (%h)" --reverse)
-            fi
-            
-            if [ -z "$COMMITS" ]; then
-              COMMITS="- No new commits (scheduled rebuild)"
-            fi
-            
-            # Get PR information from commit messages and GitHub API
-            PR_INFO=""
-            if [ "${{ github.event_name }}" == "push" ]; then
-              # Extract PR numbers from commit messages (format: (#123) or (fixes #123))
-              PR_NUMBERS=$(echo "$COMMITS" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -n -u || true)
-              
-              if [ -n "$PR_NUMBERS" ]; then
-                PR_INFO="\n\n### Related Pull Requests\n"
-                for PR_NUM in $PR_NUMBERS; do
-                  # Try to get PR info from GitHub API
-                  PR_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                    "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUM" || echo "")
-                  if [ -n "$PR_DATA" ] && [ "$PR_DATA" != "null" ] && [ "$PR_DATA" != "Not Found" ]; then
-                    PR_TITLE=$(echo "$PR_DATA" | grep -o '"title":"[^"]*"' | cut -d'"' -f4 || echo "")
-                    if [ -n "$PR_TITLE" ]; then
-                      PR_INFO="${PR_INFO}- #$PR_NUM: $PR_TITLE\n"
-                    else
-                      PR_INFO="${PR_INFO}- #$PR_NUM\n"
-                    fi
+            if [ -n "$PR_NUMBERS" ]; then
+              PR_INFO="\n\n### Related Pull Requests\n"
+              for PR_NUM in $PR_NUMBERS; do
+                # Try to get PR info from GitHub API
+                PR_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                  "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUM" || echo "")
+                if [ -n "$PR_DATA" ] && [ "$PR_DATA" != "null" ] && [ "$PR_DATA" != "Not Found" ]; then
+                  PR_TITLE=$(echo "$PR_DATA" | grep -o '"title":"[^"]*"' | cut -d'"' -f4 || echo "")
+                  if [ -n "$PR_TITLE" ]; then
+                    PR_INFO="${PR_INFO}- #$PR_NUM: $PR_TITLE\n"
                   else
                     PR_INFO="${PR_INFO}- #$PR_NUM\n"
                   fi
-                done
-                # Remove trailing newline
-                PR_INFO="${PR_INFO%\\n}"
-              fi
+                else
+                  PR_INFO="${PR_INFO}- #$PR_NUM\n"
+                fi
+              done
+              # Remove trailing newline
+              PR_INFO="${PR_INFO%\\n}"
             fi
-            
-            # Combine commit messages and PR info
-            RELEASE_BODY="${COMMITS}${PR_INFO}"
-            
-            # Save to output (escape newlines)
-            {
-              echo 'body<<EOF'
-              echo -e "$RELEASE_BODY"
-              echo EOF
-            } >> $GITHUB_OUTPUT
+          fi
+          
+          # Combine commit messages and PR info
+          RELEASE_BODY="${COMMITS}${PR_INFO}"
+          
+          # Save to output (escape newlines)
+          {
+            echo 'body<<EOF'
+            echo -e "$RELEASE_BODY"
+            echo EOF
+          } >> $GITHUB_OUTPUT
       
       - name: Create Git Tag
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "${{ steps.version.outputs.version }}" -m "Release ${{ steps.version.outputs.version }}"
+          git tag -a "${{ steps.version.outputs.version }}" -m "${{ steps.version.outputs.version }}"
           git push origin "${{ steps.version.outputs.version }}"
       
       - name: Create GitHub Release
@@ -119,7 +119,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.version.outputs.version }}
-          release_name: Release ${{ steps.version.outputs.version }}
+          release_name: ${{ steps.version.outputs.version }}
           body: ${{ steps.release-notes.outputs.body }}
           draft: false
           prerelease: false
@@ -131,6 +131,22 @@ jobs:
         uses: taiki-e/install-action@v2
         with:
           tool: zola@0.18.0
+
+      - name: Get Latest Release Version
+        id: latest-release
+        run: |
+          # Get the latest release tag (sorted by version, newest first)
+          LATEST_TAG=$(git tag -l | sort -V -r | head -1)
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="N/A"
+          fi
+          echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "Latest release: $LATEST_TAG"
+          
+          # Write to a data file for Zola to read
+          mkdir -p content/data
+          echo "latest_release = \"$LATEST_TAG\"" > content/data/release.toml
+          echo "release_url = \"https://github.com/${{ github.repository }}/releases/tag/$LATEST_TAG\"" >> content/data/release.toml
       
       - name: Build with Zola
         run: zola build
