@@ -50,55 +50,61 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Generated version: $VERSION"
       
-      - name: Gather Release Notes
-        id: release-notes
-        run: |
-          # Get the last tag (any tag, not just today's)
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          
-          if [ -z "$LAST_TAG" ]; then
-            # No previous tags, get all commits
-            COMMITS=$(git log --pretty=format:"- %s (%h)" --reverse)
-          else
-            # Get commits since last tag
-            COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s (%h)" --reverse)
-          fi
-          
-          if [ -z "$COMMITS" ]; then
-            COMMITS="- No new commits (scheduled rebuild)"
-          fi
-          
-          # Get PR information from commit messages and GitHub API
-          PR_INFO=""
-          if [ "${{ github.event_name }}" == "push" ]; then
-            # Extract PR numbers from commit messages (format: (#123) or (fixes #123))
-            PR_NUMBERS=$(echo "$COMMITS" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u || true)
+          - name: Gather Release Notes
+          id: release-notes
+          run: |
+            # Get the last tag (any tag, not just today's)
+            LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
             
-            if [ -n "$PR_NUMBERS" ]; then
-              PR_INFO="\n\n### Related Pull Requests\n"
-              for PR_NUM in $PR_NUMBERS; do
-                # Try to get PR info from GitHub API
-                PR_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                  "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUM" || echo "")
-                if [ -n "$PR_DATA" ] && [ "$PR_DATA" != "null" ] && [ "$PR_DATA" != "Not Found" ]; then
-                  PR_TITLE=$(echo "$PR_DATA" | grep -o '"title":"[^"]*"' | cut -d'"' -f4 || echo "")
-                  PR_INFO="${PR_INFO}- #$PR_NUM: $PR_TITLE\n"
-                else
-                  PR_INFO="${PR_INFO}- #$PR_NUM\n"
-                fi
-              done
+            if [ -z "$LAST_TAG" ]; then
+              # No previous tags, get all commits
+              COMMITS=$(git log --pretty=format:"- %s (%h)" --reverse)
+            else
+              # Get commits since last tag
+              COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s (%h)" --reverse)
             fi
-          fi
-          
-          # Combine commit messages and PR info
-          RELEASE_BODY="${COMMITS}${PR_INFO}"
-          
-          # Save to output (escape newlines)
-          {
-            echo 'body<<EOF'
-            echo "$RELEASE_BODY"
-            echo EOF
-          } >> $GITHUB_OUTPUT
+            
+            if [ -z "$COMMITS" ]; then
+              COMMITS="- No new commits (scheduled rebuild)"
+            fi
+            
+            # Get PR information from commit messages and GitHub API
+            PR_INFO=""
+            if [ "${{ github.event_name }}" == "push" ]; then
+              # Extract PR numbers from commit messages (format: (#123) or (fixes #123))
+              PR_NUMBERS=$(echo "$COMMITS" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -n -u || true)
+              
+              if [ -n "$PR_NUMBERS" ]; then
+                PR_INFO="\n\n### Related Pull Requests\n"
+                for PR_NUM in $PR_NUMBERS; do
+                  # Try to get PR info from GitHub API
+                  PR_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                    "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUM" || echo "")
+                  if [ -n "$PR_DATA" ] && [ "$PR_DATA" != "null" ] && [ "$PR_DATA" != "Not Found" ]; then
+                    PR_TITLE=$(echo "$PR_DATA" | grep -o '"title":"[^"]*"' | cut -d'"' -f4 || echo "")
+                    if [ -n "$PR_TITLE" ]; then
+                      PR_INFO="${PR_INFO}- #$PR_NUM: $PR_TITLE\n"
+                    else
+                      PR_INFO="${PR_INFO}- #$PR_NUM\n"
+                    fi
+                  else
+                    PR_INFO="${PR_INFO}- #$PR_NUM\n"
+                  fi
+                done
+                # Remove trailing newline
+                PR_INFO="${PR_INFO%\\n}"
+              fi
+            fi
+            
+            # Combine commit messages and PR info
+            RELEASE_BODY="${COMMITS}${PR_INFO}"
+            
+            # Save to output (escape newlines)
+            {
+              echo 'body<<EOF'
+              echo -e "$RELEASE_BODY"
+              echo EOF
+            } >> $GITHUB_OUTPUT
       
       - name: Create Git Tag
         run: |
